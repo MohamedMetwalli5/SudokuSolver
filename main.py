@@ -359,7 +359,13 @@ def solve():
     l[8][6] = e86.get()
     l[8][7] = e87.get()
     l[8][8] = e88.get()
-    print(l)
+    l_integer = [[-1 for i in range(9)] for j in range(9)]
+    for i in range(0,len(l_integer)):
+        for j in range(0, len(l_integer[0])):
+            if len(l[i][j]) > 0:
+                l_integer[i][j] = int(l[i][j])
+    print((l_integer))
+
 
 SolveButton = Button(root, padx=30, bg="yellow", font=50 , text="Solve", command=solve)
 SolveButton.grid(row=10, column=9)
