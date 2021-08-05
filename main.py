@@ -1,21 +1,19 @@
 from tkinter import *
 from PIL import ImageTk,Image
+import numpy as np
+import time
 
 root = Tk()
 root.geometry("530x600")
-root.resizable(width=0, height=0)
-root.title('Sudoku Solver')
+root.resizable(width=0, height=0) #making the size of the window fixed
+root.title("Sudoku Solver")
 
 background = ImageTk.PhotoImage(Image.open("C:/Users/Mohamed/PycharmProjects/SudokuSolver/Background.jpg"))
 background_label = Label(image=background)
 background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-l = [["0" for i in range(9)] for j in range(9)]
-
-# for i in range(0,9):
-#     for j in range(0, 9):
-#         e = Entry(root,width='2', borderwidth='2', font=('Helvetica',24))
-#         e.grid(row=i, column=j, padx=2, pady=2)
+l = [["20" for i in range(9)] for j in range(9)]
+l_integer = [[0 for i in range(9)] for j in range(9)]
 
 e00 = Entry(root,width='2', borderwidth='2', font=('Helvetica',24))
 e00.grid(row=0, column=0, padx=2, pady=2)
@@ -270,6 +268,7 @@ e88.grid(row=8, column=8, padx=2, pady=2)
 
 def solve():
     global l
+    global l_integer
     l[0][0] = e00.get()
     l[0][1] = e01.get()
     l[0][2] = e02.get()
@@ -359,16 +358,253 @@ def solve():
     l[8][6] = e86.get()
     l[8][7] = e87.get()
     l[8][8] = e88.get()
-    l_integer = [[-1 for i in range(9)] for j in range(9)]
     for i in range(0,len(l_integer)):
         for j in range(0, len(l_integer[0])):
             if len(l[i][j]) > 0:
                 l_integer[i][j] = int(l[i][j])
-    print((l_integer))
+    actual_solver()
 
+def possible(row,column,number):
+    global l_integer
+    print(np.matrix(l_integer))
+    for i in range(0,9):
+        if l_integer[row][i] == number:
+            return False
+    for i in range(0, 9):
+        if l_integer[i][column] == number:
+            return False
+    x0 = (row // 3) * 3      # to check the 3*3 grid starting from the row that the number in
+    y0 = (column // 3) * 3   # to check the 3*3 grid starting from the column that the number in
+    for i in range(0, 3):
+        for j in range(0, 3):
+            if l_integer[x0+i][y0+j] == number:
+                return False
+    return True
+
+def actual_solver():
+    global l_integer
+    for row in range(0, 9):
+        for column in range(0, 9):
+            if l_integer[row][column] == 0:
+                for number in range(1, 10):
+                    if possible(row, column, number):
+                        l_integer[row][column] = number
+                        actual_solver()
+                        l_integer[row][column] = 0
+                return
+    print(np.matrix(l_integer))
+    print()
+    e00.delete(0, END)
+    e00.insert(END, l_integer[0][0])
+    e01.delete(0, END)
+    e01.insert(END, l_integer[0][1])
+    e02.delete(0, END)
+    e02.insert(END, l_integer[0][2])
+    e03.delete(0, END)
+    e03.insert(END, l_integer[0][3])
+    e04.delete(0, END)
+    e04.insert(END, l_integer[0][4])
+    e05.delete(0, END)
+    e05.insert(END, l_integer[0][5])
+    e06.delete(0, END)
+    e06.insert(END, l_integer[0][6])
+    e07.delete(0, END)
+    e07.insert(END, l_integer[0][7])
+    e08.delete(0, END)
+    e08.insert(END, l_integer[0][8])
+
+    root.update()
+
+    e10.delete(0, END)
+    e10.insert(END, l_integer[1][0])
+    e11.delete(0, END)
+    e11.insert(END, l_integer[1][1])
+    e12.delete(0, END)
+    e12.insert(END, l_integer[1][2])
+    e13.delete(0, END)
+    e13.insert(END, l_integer[1][3])
+    e14.delete(0, END)
+    e14.insert(END, l_integer[1][4])
+    e15.delete(0, END)
+    e15.insert(END, l_integer[1][5])
+    e16.delete(0, END)
+    e16.insert(END, l_integer[1][6])
+    e17.delete(0, END)
+    e17.insert(END, l_integer[1][7])
+    e18.delete(0, END)
+    e18.insert(END, l_integer[1][8])
+
+    root.update()
+
+    e20.delete(0, END)
+    e20.insert(END, l_integer[2][0])
+    e21.delete(0, END)
+    e21.insert(END, l_integer[2][1])
+    e22.delete(0, END)
+    e22.insert(END, l_integer[2][2])
+    e23.delete(0, END)
+    e23.insert(END, l_integer[2][3])
+    e24.delete(0, END)
+    e24.insert(END, l_integer[2][4])
+    e25.delete(0, END)
+    e25.insert(END, l_integer[2][5])
+    e26.delete(0, END)
+    e26.insert(END, l_integer[2][6])
+    e27.delete(0, END)
+    e27.insert(END, l_integer[2][7])
+    e28.delete(0, END)
+    e28.insert(END, l_integer[2][8])
+
+    root.update()
+
+    e30.delete(0, END)
+    e30.insert(END, l_integer[3][0])
+    e31.delete(0, END)
+    e31.insert(END, l_integer[3][1])
+    e32.delete(0, END)
+    e32.insert(END, l_integer[3][2])
+    e33.delete(0, END)
+    e33.insert(END, l_integer[3][3])
+    e34.delete(0, END)
+    e34.insert(END, l_integer[3][4])
+    e35.delete(0, END)
+    e35.insert(END, l_integer[3][5])
+    e36.delete(0, END)
+    e36.insert(END, l_integer[3][6])
+    e37.delete(0, END)
+    e37.insert(END, l_integer[3][7])
+    e38.delete(0, END)
+    e38.insert(END, l_integer[3][8])
+
+    root.update()
+
+    e40.delete(0, END)
+    e40.insert(END, l_integer[4][0])
+    e41.delete(0, END)
+    e41.insert(END, l_integer[4][1])
+    e42.delete(0, END)
+    e42.insert(END, l_integer[4][2])
+    e43.delete(0, END)
+    e43.insert(END, l_integer[4][3])
+    e44.delete(0, END)
+    e44.insert(END, l_integer[4][4])
+    e45.delete(0, END)
+    e45.insert(END, l_integer[4][5])
+    e46.delete(0, END)
+    e46.insert(END, l_integer[4][6])
+    e47.delete(0, END)
+    e47.insert(END, l_integer[4][7])
+    e48.delete(0, END)
+    e48.insert(END, l_integer[4][8])
+
+    root.update()
+
+    e50.delete(0, END)
+    e50.insert(END, l_integer[5][0])
+    e51.delete(0, END)
+    e51.insert(END, l_integer[5][1])
+    e52.delete(0, END)
+    e52.insert(END, l_integer[5][2])
+    e53.delete(0, END)
+    e53.insert(END, l_integer[5][3])
+    e54.delete(0, END)
+    e54.insert(END, l_integer[5][4])
+    e55.delete(0, END)
+    e55.insert(END, l_integer[5][5])
+    e56.delete(0, END)
+    e56.insert(END, l_integer[5][6])
+    e57.delete(0, END)
+    e57.insert(END, l_integer[5][7])
+    e58.delete(0, END)
+    e58.insert(END, l_integer[5][8])
+
+    root.update()
+
+    e60.delete(0, END)
+    e60.insert(END, l_integer[6][0])
+    e61.delete(0, END)
+    e61.insert(END, l_integer[6][1])
+    e62.delete(0, END)
+    e62.insert(END, l_integer[6][2])
+    e63.delete(0, END)
+    e63.insert(END, l_integer[6][3])
+    e64.delete(0, END)
+    e64.insert(END, l_integer[6][4])
+    e65.delete(0, END)
+    e65.insert(END, l_integer[6][5])
+    e66.delete(0, END)
+    e66.insert(END, l_integer[6][6])
+    e67.delete(0, END)
+    e67.insert(END, l_integer[6][7])
+    e68.delete(0, END)
+    e68.insert(END, l_integer[6][8])
+
+    root.update()
+
+    e70.delete(0, END)
+    e70.insert(END, l_integer[7][0])
+    e71.delete(0, END)
+    e71.insert(END, l_integer[7][1])
+    e72.delete(0, END)
+    e72.insert(END, l_integer[7][2])
+    e73.delete(0, END)
+    e73.insert(END, l_integer[7][3])
+    e74.delete(0, END)
+    e74.insert(END, l_integer[7][4])
+    e75.delete(0, END)
+    e75.insert(END, l_integer[7][5])
+    e76.delete(0, END)
+    e76.insert(END, l_integer[7][6])
+    e77.delete(0, END)
+    e77.insert(END, l_integer[7][7])
+    e78.delete(0, END)
+    e78.insert(END, l_integer[7][8])
+
+    root.update()
+
+    e80.delete(0, END)
+    e80.insert(END, l_integer[8][0])
+    e81.delete(0, END)
+    e81.insert(END, l_integer[8][1])
+    e82.delete(0, END)
+    e82.insert(END, l_integer[8][2])
+    e83.delete(0, END)
+    e83.insert(END, l_integer[8][3])
+    e84.delete(0, END)
+    e84.insert(END, l_integer[8][4])
+    e85.delete(0, END)
+    e85.insert(END, l_integer[8][5])
+    e86.delete(0, END)
+    e86.insert(END, l_integer[8][6])
+    e87.delete(0, END)
+    e87.insert(END, l_integer[8][7])
+    e88.delete(0, END)
+    e88.insert(END, l_integer[8][8])
+
+    root.update()
+
+    e00.delete(0, END)
+    e00.insert(END, l_integer[0][0])
+    e01.delete(0, END)
+    e01.insert(END, l_integer[0][1])
+    e02.delete(0, END)
+    e02.insert(END, l_integer[0][2])
+    e03.delete(0, END)
+    e03.insert(END, l_integer[0][3])
+    e04.delete(0, END)
+    e04.insert(END, l_integer[0][4])
+    e05.delete(0, END)
+    e05.insert(END, l_integer[0][5])
+    e06.delete(0, END)
+    e06.insert(END, l_integer[0][6])
+    e07.delete(0, END)
+    e07.insert(END, l_integer[0][7])
+    e08.delete(0, END)
+    e08.insert(END, l_integer[0][8])
+    root.update()
+    time.sleep(60)  # after 60 seconds of showing the solution the program exits by itself
+    exit(0)
 
 SolveButton = Button(root, padx=30, bg="yellow", font=50 , text="Solve", command=solve)
 SolveButton.grid(row=10, column=9)
-
-
 root.mainloop()
